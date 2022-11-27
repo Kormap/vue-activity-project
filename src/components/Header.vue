@@ -58,21 +58,38 @@ export default {
       window.location.href = "/mainpage";
     },
     sessionCheck(){
-      if(sessionStorage.getItem('user_email')==null || sessionStorage.getItem('user_name')==null ){
+      if((sessionStorage.getItem('user_email')==null || sessionStorage.getItem('user_name')==null) &&
+          (sessionStorage.getItem('kakao_email')==null || sessionStorage.getItem('kakao_name')==null)){
         this.isShow = true;
         sessionStorage.removeItem('user_email');
         sessionStorage.removeItem('user_name');
+
       }else {
-        sessionStorage.getItem('user_email');
-        sessionStorage.getItem('user_name');
-        this.user_email = sessionStorage.getItem('user_email');
-        this.user_name = sessionStorage.getItem('user_name');
-        this.isShow = false;
+          //일반 로그인 유저 세션
+          if(!(sessionStorage.getItem('user_email'==null || sessionStorage.getItem('user_name')==null))){
+              sessionStorage.getItem('user_email');
+              sessionStorage.getItem('user_name');
+              this.user_email = sessionStorage.getItem('user_email');
+              this.user_name = sessionStorage.getItem('user_name');
+              this.isShow = false;
+          }
+          //카카오 API 로그인 유저 세션
+         if(!(sessionStorage.getItem('kakao_email'==null || sessionStorage.getItem('kakao_name')==null))){
+             sessionStorage.getItem('kakao_email');
+             sessionStorage.getItem('kakao_name');
+             this.kakao_email = sessionStorage.getItem('kakao_email');
+             this.kakao_name = sessionStorage.getItem('kakao_name');
+             this.isShow = false;
+         }
+
       }
     },
     logout() {
       sessionStorage.removeItem('user_email');
       sessionStorage.removeItem('user_name');
+      sessionStorage.removeItem('kakao_email');
+      sessionStorage.removeItem('kakao_name');
+
       this.isShow =true;
       alert("로그아웃 되었습니다.");
       window.location.href = "/login";

@@ -4,7 +4,6 @@
     <h2>회원가입 페이지</h2>
 
     <div class="signup-page">
-
       <div class="form">
             <form id="register-form" class="register-form" method="post">
               <p id="checkID_msg" v-if="checkemail" style="color: red; font-size: 20px; font-weight: bold;"> 중복된 이메일입니다. 다시 입력 바랍니다. </p>

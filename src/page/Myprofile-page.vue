@@ -100,20 +100,26 @@ export default {
       this.is_show = !this.is_show; // #2, #3
     },
     myInfo() {
-      axios.get('/api/user/myinfo')
-          .then(res => {
-            this.user_email = res.data[0].user_email;
-            this.user_name = res.data[0].user_name;
-            this.user_password = res.data[0].user_password;
-            this.user_tell = res.data[0].user_tell;
-            this.tell1 = this.user_tell.slice(0,3);
-            this.tell2 = this.user_tell.slice(4,8);
-            this.tell3 = this.user_tell.slice(9,13);
+      if(!(sessionStorage.user_email == null)){
+        axios.get('/api/user/myinfo')
+            .then(res => {
+              this.user_email = res.data[0].user_email;
+              this.user_name = res.data[0].user_name;
+              this.user_password = res.data[0].user_password;
+              this.user_tell = res.data[0].user_tell;
+              this.tell1 = this.user_tell.slice(0,3);
+              this.tell2 = this.user_tell.slice(4,8);
+              this.tell3 = this.user_tell.slice(9,13);
 
-          }).catch(err => {
-      })
+            }).catch(err => {
+        })
+      }
+      if(!(sessionStorage.kakao_email == null)){
+        this.user_email = sessionStorage.getItem('kakao_email');
+        this.user_name = sessionStorage.getItem('kakao_name');
+      }
 
-      if(sessionStorage.user_email == null){
+      if(sessionStorage.user_email == null && sessionStorage.kakao_email == null){
         alert("로그인 후 이용바랍니다.");
         window.location.href = "/login";
       }

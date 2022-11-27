@@ -62,7 +62,8 @@ export default {
   methods: {
     selectDate(){
       this.$emit('selectDate',this.date);
-      this.setminDate = new Date().toLocaleDateString();
+      // this.setminDate = new Date().toLocaleDateString();
+      this.setminDate = new Date();
     }
 
   }

@@ -12,10 +12,19 @@
         <p class="message">회원이 아니십니까? <router-link to="/signup">회원가입 </router-link></p>
         <p class="message">액티비티 컨텐츠 확인을 원하시나요?<a href="/mainpage"> 액티비티 페이지 </a></p>
       </form>
+      <section class="test">
+        <div id="kakaoLogin" v-on:click="kakaoLoginBtn" >
+          <img class="image_titleContainer" v-bind:src="require('/Users/donghyeok/Desktop/My/Virtual Machine/kakaoLoginButton.png')" alt=" "
+               style="border-radius: 5px; margin-top: 30px; width: 100px; height: 40px;">
+        </div>
+      </section>
     </div>
+
   </div>
 
+
 </template>
+<!-- 카카오 스크립트 -->
 
 <script scope>
 import axios from "axios";
@@ -24,14 +33,14 @@ import HeaderComponent from "@/components/Header";
 export default {
   name: "Login-page",
   mounted() {
-
+    window.Kakao.init('c8f556efe6b205b375a965efa5914689') // Kakao Developers에서 요약 정보 -> JavaScript 키
   },
   data() {
     return {
       user_email : this.user_email,
       user_password : this.user_password,
       user_name : this.user_name,
-
+      kakaoUserInfo : this.property_keys,
     };
   },
   components: {
@@ -63,7 +72,76 @@ export default {
     },
     keypress() {
       this.loginClicked();
-    }
+    },
+
+
+    kakaoLoginBtn() {
+
+      if (window.Kakao.Auth.getAccessToken()) {
+        window.Kakao.API.request({
+          url: '/v1/user/unlink',
+          success: function (response) {
+            console.log("TOKEN===")
+            console.log(response)
+            console.log("FINISH===")
+          },
+          fail: function (error) {
+            console.log(error)
+          },
+        })
+        window.Kakao.Auth.setAccessToken(undefined)
+      }
+
+
+      window.Kakao.Auth.login({
+        success: function () {
+          window.Kakao.API.request({
+            url: '/v2/user/me',
+            data: {
+              property_keys: ["kakao_account.email"
+                              ,"kakao_account.profile.thumbnail_image_url"
+                              ,"kakao_account.profile.nickname"
+                              ,"auth_time"
+                             ],
+            },
+
+            success: async function (response) {
+              console.log(response);
+              const kakao_email = response.kakao_account.email.toString();
+              const kakao_name = response.kakao_account.profile.nickname;
+              console.log("kakao_email = " + kakao_email);
+              console.log("kakao_name = " + kakao_name);
+              // console.log("kakaoe_amil= "+ response.kakao_account.email.toString());
+              //카카오 로그인 API , 스프링 부트 서버 데이터 전달
+              axios.post('/api/user/kakaoLogin',
+                  { kakaoUserInfo: response, kakao_email: kakao_email } )
+                  .then(res =>{
+                    console.log(res);
+                    console.log(res.data);
+                    if(res.data == "TRUE"){
+                      sessionStorage.setItem('kakao_email',kakao_email);
+                      sessionStorage.setItem('kakao_name',kakao_name);
+                      window.location.href = "/mainpage";
+                    }
+                    else{
+                      alert("로그인 인증에 실패하였습니다. 다시 시도해주세요");
+                    }
+                  }).catch(err => {
+              })
+
+
+            },
+            fail: function (error) {
+              console.log(error)
+            },
+          })
+        },
+        fail: function (error) {
+          console.log(error)
+        },
+      })
+    },
+
   },
 
 }

@@ -87,6 +87,7 @@ export default {
             }
             this.contentlist_cnt = res.data.length;
             this.pageArray = res.data;
+            console.log(res.data);
           }).catch(err => {
       })
     },
