@@ -33,6 +33,7 @@ import HeaderComponent from "@/components/Header";
 export default {
   name: "Login-page",
   mounted() {
+    //카카오 로그인 API , kakaoLoginBtn 함수에 init 할 경우 버튼 클릭시 마다 init 됨 = 2번 이상 호출 시 에러 발생하여 mount 할때 초기화 1회 실시
     window.Kakao.init('c8f556efe6b205b375a965efa5914689') // Kakao Developers에서 요약 정보 -> JavaScript 키
   },
   data() {
@@ -78,6 +79,7 @@ export default {
     kakaoLoginBtn() {
 
       if (window.Kakao.Auth.getAccessToken()) {
+        console.log(window.Kakao.Auth.getAccessToken());
         window.Kakao.API.request({
           url: '/v1/user/unlink',
           success: function (response) {
