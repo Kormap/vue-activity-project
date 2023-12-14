@@ -8,7 +8,7 @@
        <span v-for="(p,idx) in paginatedData" v-bind:key="idx" style="margin-left: 0px;">
           <b-card
               v-bind:title="paginatedData[idx].content_name"
-              v-bind:img-src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload'+paginatedData[idx].image_path)"
+              v-bind:img-src="require('@/assets/images'+paginatedData[idx].image_path)"
               v-bind:key="idx"
               img-alt="Image"
               img-top

@@ -3,9 +3,10 @@
 <!--    <h3>header part</h3>-->
     <!-- 이미지 업로드 -->
     <div id="logoImage" style="width:150px; height:50px; float: left;">
-<!--      <router-link style=text-decoration:none; to="/mainpage" class="routerBtn">-->
+      <!--  프로젝트 로고   -->
       <a @click="routerHome()" style="color : #3a3131; width: 50px;">
-        <img style="width: 150px; height: 100px; margin-top: -20px;" src="https://ifh.cc/g/5YjHFf.png">
+        <img style="width: 150px; height: 100px; margin-top: -20px;"
+             v-bind:src="require('@/assets/images/dongActivityLogo.png')">
       </a>
         <!--      </router-link>-->
     </div>
@@ -89,6 +90,7 @@ export default {
       sessionStorage.removeItem('user_name');
       sessionStorage.removeItem('kakao_email');
       sessionStorage.removeItem('kakao_name');
+      sessionStorage.removeItem('kakao_profile');
 
       this.isShow =true;
       alert("로그아웃 되었습니다.");

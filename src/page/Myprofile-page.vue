@@ -27,7 +27,7 @@
           </div>
           <div>
             <label for="userpw_r">비밀번호</label>
-            <input type="password" id="userpw_r" name="member_pw" class="userpw_r" placeholder="비밀번호를 입력하세요" maxlength="20" v-model="user_password" disabled>
+            <input type="password" id="userpw_r" name="member_pw" class="userpw_r" placeholder="Password" maxlength="20" v-model="user_password" disabled>
           </div>
           <div>
             <br>
@@ -35,9 +35,9 @@
             <label for="usertell">연락처</label>
             <input id="tel_1" type="tel" name='phone1' value="010" placeholder="010" v-model="tell1" maxlength="3"
                    @keyup="only_number($event)"/> -
-            <input id="tel_2" type="tel" name='phone2' v-model="tell2"
+            <input id="tel_2" type="tel" name='phone2' v-model="tell2" placeholder="****"
                    @keyup="only_number($event)" maxlength="4"/> -
-            <input id="tel_3" type="tel" name='phone3' v-model="tell3"
+            <input id="tel_3" type="tel" name='phone3' v-model="tell3" placeholder="****"
                    @keyup="only_number($event)" maxlength="4"/>
           </div>
           <button type="button" @click="updateRegister()">저장</button>
@@ -86,6 +86,7 @@ export default {
       user_name : this.user_name,
       user_password : this.user_password,
       user_tell : this.user_tell,
+      user_profile : this.user_profile,
       numAlert : false,
       tell1 : "010", tell2 : this.tell2, tell3 :this.tell3,
       is_show: false,
@@ -97,8 +98,14 @@ export default {
   },
   methods: {
     handle_toggle: function(){
-      this.is_show = !this.is_show; // #2, #3
+
+      // 일반/카카오 유저 회원탈퇴 분기 처리
+      if(!(sessionStorage.getItem('user_email')==null)) {
+        this.is_show = !this.is_show; // #2, #3
+      }
+      if(!(sessionStorage.getItem('kakao_email')==null)) alert("카카오 로그인 회원은 탈퇴가 불가능합니다.")
     },
+    //불러올 유저 정보
     myInfo() {
       if(!(sessionStorage.user_email == null)){
         axios.get('/api/user/myinfo')
@@ -122,6 +129,12 @@ export default {
       if(sessionStorage.user_email == null && sessionStorage.kakao_email == null){
         alert("로그인 후 이용바랍니다.");
         window.location.href = "/login";
+      }
+
+      //카카오 프로필 사진
+      if(!(sessionStorage.kakao_profile == null)) {
+        this.user_profile = sessionStorage.getItem('kakao_profile');
+        console.log(this.user_profile);
       }
     },
     //숫자만 입력(핸드폰번호)

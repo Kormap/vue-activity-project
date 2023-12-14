@@ -1,9 +1,9 @@
 <template>
   <div id="slideShow">
     <ul class="slides">
-      <li><img :src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload/suninjang_info1.jpg').default" alt=""></li>
-      <li><img :src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload/suninjang_info2.jpg')" alt=""></li>
-      <li><img :src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload/suninjang_info3.jpg')" alt=""></li>
+      <li><img :src="require('@/assets/images/suninjang_info1.jpg').default" alt=""></li>
+      <li><img :src="require('@/assets/images/suninjang_info2.jpg')" alt=""></li>
+      <li><img :src="require('@/assets/images/suninjang_info3.jpg')" alt=""></li>
     </ul>
     <p class="controller">
       <span class="prev">&lang;</span>

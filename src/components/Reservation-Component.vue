@@ -192,7 +192,7 @@ export default {
           alert("날짜를 확인해주세요");
           return false;
         }
-        if(sessionStorage.getItem('user_email')==null){
+        if(sessionStorage.getItem('user_email')==null && sessionStorage.getItem('kakao_email') ==null){
           alert("로그인 후 이용해주세요.");
           window.location.href = "/login";
           return false;
@@ -208,10 +208,17 @@ export default {
 
     saveWishlist() {
       const content_no = this.$route.query.content_no;
-      const user_email = sessionStorage.getItem('user_email');
+
+      //위시리스트 저장 일반/카카오 유저 분기 처리
+      if(!(sessionStorage.getItem('user_email')==null))
+        this.user_email = sessionStorage.getItem('user_email');
+
+      if(!(sessionStorage.getItem('kakao_email')==null))
+        this.user_email = sessionStorage.getItem('kakao_email');
+
       const wishlist_info = new Object();
       wishlist_info.content_no = content_no;
-      wishlist_info.user_email = user_email;
+      wishlist_info.user_email = this.user_email;
 
       axios.post('/api/wishlist/insert', wishlist_info)
           .then(res => {

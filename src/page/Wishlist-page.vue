@@ -21,7 +21,7 @@
 
     <div class="wishlistbox" v-if="isShow">
       <div class="wishlist" v-for="(wishlist,idx) in paginatedData" :key="idx">
-        <img class="image_titleContainer" v-bind:src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload'+paginatedData[idx].image_path)">
+        <img class="image_titleContainer" v-bind:src="require('@/assets/images'+paginatedData[idx].image_path)">
         <div id="wishlistbox_content">
           <hr>
           <p style="margin-top: 80px; font-size: 20px; font-weight: bold;">{{paginatedData[idx].content_name}}</p>
@@ -70,6 +70,7 @@ export default {
   data() {
     return {
       isShow : true,
+      user_email : this.user_email,
       fields : [
                 'content_no', 'content_name', 'content_info', 'content_price', 'content_capacity',
                 'content_yn', 'usr_id', 'title_image', 'wishlist_no', 'user_email'
@@ -95,13 +96,20 @@ export default {
     },
     //===============================================
     getWishlist() {
-      if(sessionStorage.user_email == null){
+
+      if(sessionStorage.user_email == null && sessionStorage.kakao_email == null){
         alert("로그인 후 이용바랍니다.");
         window.location.href = "/login";
       }
-      const user_email = sessionStorage.getItem('user_email');
 
-      axios.post('/api/wishlist/getwishlist', {user_email : user_email})
+      //예약내역 디스플레이 일반/카카오 유저 분기 처리
+      if(!(sessionStorage.getItem('user_email')==null))
+        this.user_email = sessionStorage.getItem('user_email');
+
+      if(!(sessionStorage.getItem('kakao_email')==null))
+        this.user_email = sessionStorage.getItem('kakao_email');
+
+      axios.post('/api/wishlist/getwishlist', {user_email : this.user_email})
           .then(res => {
             for(let i=0; i<res.data.length; i++){
               this.wish_list.push({
