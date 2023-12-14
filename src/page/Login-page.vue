@@ -34,7 +34,7 @@ export default {
   name: "Login-page",
   mounted() {
     //카카오 로그인 API , kakaoLoginBtn 함수에 init 할 경우 버튼 클릭시 마다 init 됨 = 2번 이상 호출 시 에러 발생하여 mount 할때 초기화 1회 실시
-    window.Kakao.init('c8f556efe6b205b375a965efa5914689') // Kakao Developers에서 요약 정보 -> JavaScript 키
+    window.Kakao.init('462d988620110902f1dee22e569cb5ef') // Kakao Developers에서 요약 정보 -> JavaScript 키
   },
   data() {
     return {
@@ -109,11 +109,15 @@ export default {
 
             success: async function (response) {
               console.log(response);
+
+              //이메일, 이름, 프로필사진
               const kakao_email = response.kakao_account.email.toString();
               const kakao_name = response.kakao_account.profile.nickname;
+              const kakao_profile = response.kakao_account.profile.thumbnail_image_url;
               console.log("kakao_email = " + kakao_email);
               console.log("kakao_name = " + kakao_name);
-              // console.log("kakaoe_amil= "+ response.kakao_account.email.toString());
+              console.log("kakao_profile = " + kakao_profile);
+
               //카카오 로그인 API , 스프링 부트 서버 데이터 전달
               axios.post('/api/user/kakaoLogin',
                   { kakaoUserInfo: response, kakao_email: kakao_email } )
@@ -123,6 +127,7 @@ export default {
                     if(res.data == "TRUE"){
                       sessionStorage.setItem('kakao_email',kakao_email);
                       sessionStorage.setItem('kakao_name',kakao_name);
+                      sessionStorage.setItem('kakao_profile', kakao_profile);
                       window.location.href = "/mainpage";
                     }
                     else{

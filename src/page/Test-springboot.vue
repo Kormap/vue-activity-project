@@ -2,30 +2,30 @@
 <template>
 
   <div>
-    <br><br><br><br>
-    <button @click="load()">get(스프링부트) - 로드 시 콘솔에 출력</button>
-    <br><br>
+    <EditorComponent/>
+    <button @click="setContent">저장하기</button>
     <div id="demo">
       <button @click="submitBtn()">post(스프링부트)</button>
     </div>
-
-
   </div>
 
 </template>
 
 <script>
-
 //axios 라이브러리 import
-import axios from 'axios'
+import axios from 'axios';
+import EditorComponent from "@/components/Editor-component";
 
 export default {
   name: 'TestVueExaxios',
 
+  components: {
+    EditorComponent,
+  },
+
   data() {
     return {
-
-
+      content: "",
     };
   },
 
@@ -35,6 +35,11 @@ export default {
   },
 
   methods: {
+    setContent(e){
+      this.content = e;
+      console.log(this.content);
+    },
+
     //유저 정보 관련 테스팅
     load() {
       axios.get('/api/user/list')
@@ -60,7 +65,7 @@ export default {
           }).catch(err => {
         console.log(err);
       });
-    }
+    },
   },
 };
 </script>

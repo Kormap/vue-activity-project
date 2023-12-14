@@ -12,7 +12,7 @@
         </span>
       </a>
     <div id="title_image">
-      <img class="image_titleContainer" v-bind:src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload'+title_image)" alt=" " style="border-radius: 5px;">
+      <img class="image_titleContainer" v-bind:src="require('@/assets/images'+title_image)" alt=" " style="border-radius: 5px;">
     </div>
     <div id="smallbar">
       <a href="/mainpage/" style="text-decoration:none; color: darkslategray">
@@ -53,9 +53,14 @@
     <div class="image_group">
         <div id="image1">
           <div v-for="(image, idx) in content_imagegroup" :key="idx" class="imageContainer">
-            <img :src = "require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload'+image)" alt="" style="max-width: 1000px; border-radius: 10px;"/>
+            <img :src = "require('@/assets/images'+image)" alt="" style="max-width: 1000px; border-radius: 10px;"/>
           </div>
         </div>
+      </div>
+
+      <!--  카카오 지도 API        -->
+      <div id="Map_API" style="margin-left: 200px;" >
+        <Map_API></Map_API>
       </div>
     </div>
   </div>
@@ -65,6 +70,7 @@
 import Nav from "@/components/Nav-component";
 import ReservationComponent from "@/components/Reservation-Component";
 import axios from "axios";
+import Map_API from "@/components/Map_API";
 
 const category1 = " ";
 var Query_content_no = '';
@@ -73,6 +79,7 @@ var Query_content_no = '';
 export default {
   name: "Detail-page",
   components: {
+    Map_API,
     ReservationComponent,
     Nav,
   },

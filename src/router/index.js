@@ -75,7 +75,8 @@ export default new VueRouter({
     }, {
         path: '/reservation',
         component: ReservationComponent,
-        },
+    },
+
         //스프링부트 연동 테스트페이지 라우터
         {
             path: '/test',

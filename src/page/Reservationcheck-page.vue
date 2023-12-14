@@ -6,7 +6,7 @@
     <div id="reservationBox" >
     <p style="text-align: center; font-size: 40px; font-weight: bold">예매확인페이지</p>
 
-      <img id="titleImg" v-bind:src="require('/Users/donghyeok/Desktop/My/Virtual Machine/Upload'+$route.params.title_image)">
+      <img id="titleImg" v-bind:src="require('@/assets/images'+$route.params.title_image)">
       <div id="text">
         <div class="text">컨텐츠명: {{ $route.params.content_name }}</div>
         <div class="text">예약날짜: {{ $route.params.selectDate }}</div>
@@ -77,7 +77,14 @@ export default {
       reservation_info.r_price = this.r_price; //r_price
       reservation_info.r_option = this.selectOption; //r_option
       reservation_info.r_status_yn = "Y";
-      reservation_info.user_email = sessionStorage.getItem('user_email');
+
+      //일반 로그인 유저, 카카오 로그인 유저 분기 처리
+      if(!(sessionStorage.getItem('user_email')==null))
+        reservation_info.user_email = sessionStorage.getItem('user_email');
+
+      if(!(sessionStorage.getItem('kakao_email')==null))
+        reservation_info.user_email = sessionStorage.getItem('kakao_email');
+
       reservation_info.content_no = this.content_no;
       axios.post('api/reservation/insert',reservation_info)
           .then(res => {

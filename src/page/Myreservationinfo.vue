@@ -16,22 +16,10 @@
     </div>
 
     <div id="reservationbox" v-if="isShow">
-      <!--      <b-table :items="this.reservation_list" :fields="fields" striped responsive="sm">-->
-      <!--        <template #cell(예약취소)="row">-->
-      <!--          <router-link v-bind:to="`/mainpage`"-->
-      <!--          >-->
-<!--          <b-button size="sm" name="cancelBtn" @click="cancelReservation()" class="mr-2">-->
-<!--            취소하기-->
-<!--          </b-button>-->
-<!--          </router-link>-->
-<!--        </template>-->
-<!--      </b-table>-->
       <table  width="100%" height="100%"
                     style="border-radius: 5px; border-color: white;
                            border-collapse: collapse;">
-
               <thead>
-
               <tr text-align="center" >
                 <th v-for="(title,idx) in fields"
                     v-bind:key="idx">
@@ -40,11 +28,11 @@
               </tr>
               </thead>
               <tbody>
-              <tr text-align="center" background-color="white"
+              <!--  예약상태가 Y(정상) 인 경우   -->
+              <tr text-align="center" background-color="white" id="normal_reseravation"
                   style="border: 1px solid #b3b3b3;"
                   v-for="(reservation,idx) in paginatedData"
-                  v-bind:key="idx">
-
+                  v-bind:key="idx" v-if="paginatedData[idx].r_status_yn=='Y'">
                <td style="background-color: white; width: 100px;
                           border: 1px solid #b3b3b3;">
                 {{paginatedData[idx].r_no}}
@@ -72,6 +60,40 @@
                              :value="`${paginatedData[idx].r_no}`"
                              @click="cancelReservation(idx)">
                     예약취소
+                  </b-button>
+                </td>
+                <!--  예약상태가 N(취소) 인 경우   -->
+              <tr text-align="center" background-color="lightgrey" id="cancle_reseravation"
+                  style="border: 1px solid #b3b3b3;"
+                  v-for="(reservation,idx) in paginatedData"
+                  v-bind:key="idx" v-if="paginatedData[idx].r_status_yn=='N'">
+                <td style="background-color: lightgrey; width: 100px;
+                          border: 1px solid #b3b3b3;">
+                  {{paginatedData[idx].r_no}}
+                </td>
+                <td style="background-color: lightgrey; border: 1px solid #b3b3b3;" >
+                  <router-link v-bind:to="`/detailpage?content_no=${paginatedData[idx].content_no}`"
+                               style="font-size: 18px; text-decoration: none; color: #889fb9">
+                    {{paginatedData[idx].content_name}}
+                  </router-link>
+                </td>
+                <td style="background-color: lightgrey; border: 1px solid #b3b3b3;">
+                  {{paginatedData[idx].r_time}}
+                </td>
+                <td style="background-color: lightgrey; border: 1px solid #b3b3b3;">
+                  {{paginatedData[idx].r_peoplecount}}
+                </td>
+                <td style="background-color: lightgrey; border: 1px solid #b3b3b3;">
+                  {{paginatedData[idx].r_price | content_price}}
+                </td>
+                <td style="background-color: lightgrey; border: 1px solid #b3b3b3;">
+                  {{paginatedData[idx].r_option}}
+                </td>
+                <td style="background-color: lightgrey; border: 1px solid #b3b3b3;">
+                  <b-button  id="cancel_r_no" class="btn btn-danger"
+                             :value="`${paginatedData[idx].r_no}`">
+<!--                             @click="cancelReservation(idx)"-->
+                    취소된 예약
                   </b-button>
                 </td>
 <!--                <td style="background-color: white; border: 1px solid #b3b3b3;">-->
@@ -119,6 +141,7 @@ export default {
       pageSize: this.pageSize,
       //===============================================
       fields: ['예약번호','컨텐츠명', '예약날짜','예약인원','예약가','예약옵션', '예약취소'],
+      user_email : this.user_email,
       reservation_list : this.reservation_list,
       isShow : true,
     }
@@ -134,12 +157,19 @@ export default {
     //===============================================
 
     reservationinfo(){
-      if(sessionStorage.user_email == null){
+      if(sessionStorage.user_email == null && sessionStorage.kakao_email == null){
         alert("로그인 후 이용바랍니다.");
         window.location.href = "/login";
       }
-      const user_email = sessionStorage.getItem('user_email');
-      axios.post('/api/reservation/infolist' , {user_email: user_email})
+
+      //예약내역 디스플레이 일반/카카오 유저 분기 처리
+      if(!(sessionStorage.getItem('user_email')==null))
+        this.user_email = sessionStorage.getItem('user_email');
+
+      if(!(sessionStorage.getItem('kakao_email')==null))
+        this.user_email = sessionStorage.getItem('kakao_email');
+
+      axios.post('/api/reservation/infolist' , {user_email: this.user_email})
           .then(res => {
             this.reservation_list = [];
             for(let i=0; i<res.data.length; i++) {
@@ -250,5 +280,8 @@ export default {
   position: relative;
   margin-top: 750px;
   margin-left: 200px;
+}
+#cancle_reseravation{
+  background-color: #2c3e50;
 }
 </style>
