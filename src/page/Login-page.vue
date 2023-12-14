@@ -14,7 +14,7 @@
       </form>
       <section class="test">
         <div id="kakaoLogin" v-on:click="kakaoLoginBtn" >
-          <img class="image_titleContainer" v-bind:src="require('/Users/donghyeok/Desktop/My/Virtual Machine/kakaoLoginButton.png')" alt=" "
+          <img class="image_titleContainer" v-bind:src="require('@/assets/images/kakaoLoginButton.png')" alt=" "
                style="border-radius: 5px; margin-top: 30px; width: 100px; height: 40px;">
         </div>
       </section>
