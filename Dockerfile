@@ -12,5 +12,5 @@ COPY . .
 # PORT : 8080
 EXPOSE 8080
 
-CMD ["npm", "run", "serve"]
-#CMD ["npm", "run", "dev-serve"]
+#CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "dev-serve"]
