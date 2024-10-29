@@ -2,7 +2,7 @@
   <div id="Search-component">
 
     <div class="searchContainer">
-    <img class="searchContainer" src="https://images.france.fr/zeaejvyq9bhj/32UttQcIXYSe44uokUW4q6/6afa279a63a6cea9b8bdf9d139d20609/article_ImP_Polynesie_1120x490.jpg?w=1120&h=490&q=70&fm=webp&fit=fill">
+    <img class="searchContainer" src="/img/artworld_title.ee77dd34.jpg">
     </div>
     <br><br>
     <div class="jb-text">
